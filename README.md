@@ -13,8 +13,7 @@
 - 待補
 
 ```
-註:在 TestClockManager.m 這個 ViewController 類別內有簡單的使用方法、
-ClockManager.h 內也有註解可以了解其用法。
+註:在 ViewController.m 這個類別內有簡單的使用方法、 ClockManager.h 內也有註解可以了解其用法。
 ```
 
 # 影片
