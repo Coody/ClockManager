@@ -9,6 +9,9 @@
 - 即使 App 關掉，下次開啟也會自動計算關掉 App 的時間差，然後繼續倒數。
 - 畫面切換也不會影響內部時鐘計算。
 
+# 使用說明
+- 待補（在 TestClockManager 這個類別內有簡單的使用方法、 ClockManager 內也有註解可以了解其用法）
+
 # 影片
 - https://youtu.be/VhVlhHJTQ6E
 
