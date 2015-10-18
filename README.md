@@ -10,7 +10,8 @@
 - 畫面切換也不會影響內部時鐘計算。
 
 # 使用說明
-- 待補（在 TestClockManager 這個類別內有簡單的使用方法、 ClockManager 內也有註解可以了解其用法）
+- 待補
+ps: 在 TestClockManager 這個類別內有簡單的使用方法、 ClockManager 內也有註解可以了解其用法。
 
 # 影片
 - https://youtu.be/VhVlhHJTQ6E
