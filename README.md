@@ -11,7 +11,7 @@
 
 # 使用說明
 - 待補
-ps: 在 TestClockManager 這個類別內有簡單的使用方法、 ClockManager 內也有註解可以了解其用法。
+ps: 在 TestClockManager.m 這個 ViewController 類別內有簡單的使用方法、 ClockManager.h 內也有註解可以了解其用法。
 
 # 影片
 - https://youtu.be/VhVlhHJTQ6E
