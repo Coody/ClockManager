@@ -10,7 +10,7 @@
 - 畫面切換也不會影響內部時鐘計算。
 
 # 影片
-- (待補)
+- https://youtu.be/VhVlhHJTQ6E
 
 # 聲明
 - 此 License 屬於 MIT ，請自由取用。
