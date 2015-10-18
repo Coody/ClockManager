@@ -22,10 +22,14 @@
 @implementation ViewController
 
 - (IBAction)pressedButton:(UIButton *)sender {
+    
+    __weak __typeof(self) weakSelf = self;
     [[ClockManager sharedInstance] getClockWithSecond:60 
                                               withTag:K_REGISTER_PHONE_CLOCK 
                                             withBlock:^(NSString *second) 
     {
+        __strong __typeof(weakSelf) strongSelf = weakSelf;
+        
         NSString *buttonTitle;
         if ( [second isEqualToString:@"0"] ) {
             buttonTitle = @"開始";
@@ -33,7 +37,7 @@
         else{
             buttonTitle = [NSString stringWithFormat:@"倒數 %@ 秒！" ,second];
         }
-        [_testButton setTitle:buttonTitle forState:UIControlStateNormal];
+        [strongSelf->_testButton setTitle:buttonTitle forState:UIControlStateNormal];
     }];
 }
 
@@ -49,10 +53,13 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    
+    __weak __typeof(self) weakSelf = self;
     [[ClockManager sharedInstance] restartColekWithSecond:60 
                                                   WithTag:K_REGISTER_PHONE_CLOCK 
                                                 withBlock:^(NSString *second) 
     {
+        __strong __typeof(weakSelf) strongSelf = weakSelf;
         NSString *buttonTitle;
         if ( [second isEqualToString:@"0"] ) {
             buttonTitle = @"開始";
@@ -60,7 +67,7 @@
         else{
             buttonTitle = [NSString stringWithFormat:@"倒數 %@ 秒！" ,second];
         }
-        [_testButton setTitle:buttonTitle forState:UIControlStateNormal];
+        [strongSelf->_testButton setTitle:buttonTitle forState:UIControlStateNormal];
     }];
 }
 
