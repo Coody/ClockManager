@@ -530,6 +530,7 @@
 				FB41E6B21BD3C3430076658C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FB41E6B31BD3C3430076658C /* Build configuration list for PBXNativeTarget "TestColckManagerTests" */ = {
 			isa = XCConfigurationList;
@@ -538,6 +539,7 @@
 				FB41E6B51BD3C3430076658C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FB41E6B61BD3C3430076658C /* Build configuration list for PBXNativeTarget "TestColckManagerUITests" */ = {
 			isa = XCConfigurationList;
@@ -546,6 +548,7 @@
 				FB41E6B81BD3C3430076658C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
