@@ -47,7 +47,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 /**
  * @brief - 回呼函式（回傳 NSString ）
  */
-@property (nonatomic , copy) void(^block)(NSString *second);
+@property (nonatomic , copy) void(^block)(NSUInteger second);
 
 /**
  * @brief  - 初始化方法
@@ -57,10 +57,10 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
  */
 -(instancetype)initWithDefaultSecond:(NSUInteger)tempSecond 
                              withTag:(NSUInteger)tempTag 
-                           withBlock:(void(^)(NSString *second))responseBlock;
+                           withBlock:(void(^)(NSUInteger second))responseBlock;
 
 /***/
--(void)startClockWithBlock:(void(^)(NSString *second))responseBlock;
+-(void)startClockWithBlock:(void(^)(NSUInteger second))responseBlock;
 
 /**
  * @brief - 關閉 Clock ，解構使用
@@ -86,7 +86,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 /* 初始化 */
 -(instancetype)initWithDefaultSecond:(NSUInteger)tempSecond 
                              withTag:(NSUInteger)tempTag 
-                           withBlock:(void(^)(NSString *second))responseBlock
+                           withBlock:(void(^)(NSUInteger second))responseBlock
 {
     self = [super init];
     if ( self ) 
@@ -106,7 +106,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 }
 
 
--(void)startClockWithBlock:(void(^)(NSString *second))responseBlock
+-(void)startClockWithBlock:(void(^)(NSUInteger second))responseBlock
 {
     _block = nil;
     _block = responseBlock;
@@ -187,7 +187,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
         self.recentSecond = _recentSecond - 1;
     }
     NSLog(@" 倒數計時：%lu" , _recentSecond);
-    _block([self getSecondString]);
+    _block( _recentSecond );
 }
 
 +(NSString *)getClockKey:(NSUInteger)tempTag{
@@ -232,7 +232,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 }
 
 #pragma mark - 開放方法
--(void)getClockWithSecond:(NSUInteger)tempSecond withTag:(NSUInteger)tempTag withBlock:(void(^)(NSString *second))responseBlock{
+-(void)getClockWithSecond:(NSUInteger)tempSecond withTag:(NSUInteger)tempTag withBlock:(void(^)(NSUInteger second))responseBlock{
     if ( tempSecond == 0 ) {
         NSLog(@" 鬧鐘設定倒數時間不為零！！請確認！");
         return;
@@ -254,7 +254,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     }
 }
 
--(void)restartColekWithSecond:(NSUInteger)tempSecond WithTag:(NSUInteger)tempTag withBlock:(void(^)(NSString *second))responseBlock{
+-(void)restartColekWithSecond:(NSUInteger)tempSecond WithTag:(NSUInteger)tempTag withBlock:(void(^)( NSUInteger second ))responseBlock{
     
     /*
      1. 去找 UserDefault 是否有存在的時間？

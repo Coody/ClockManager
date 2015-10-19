@@ -26,16 +26,16 @@
     __weak __typeof(self) weakSelf = self;
     [[ClockManager sharedInstance] getClockWithSecond:60 
                                               withTag:K_REGISTER_PHONE_CLOCK 
-                                            withBlock:^(NSString *second) 
+                                            withBlock:^(NSUInteger second) 
     {
         __strong __typeof(weakSelf) strongSelf = weakSelf;
         
         NSString *buttonTitle;
-        if ( [second isEqualToString:@"0"] ) {
+        if ( second == 0 ) {
             buttonTitle = @"開始";
         }
         else{
-            buttonTitle = [NSString stringWithFormat:@"倒數 %@ 秒！" ,second];
+            buttonTitle = [NSString stringWithFormat:@"倒數 %2lu 秒！" ,second];
         }
         [strongSelf->_testButton setTitle:buttonTitle forState:UIControlStateNormal];
     }];
@@ -57,15 +57,15 @@
     __weak __typeof(self) weakSelf = self;
     [[ClockManager sharedInstance] restartColekWithSecond:60 
                                                   WithTag:K_REGISTER_PHONE_CLOCK 
-                                                withBlock:^(NSString *second) 
+                                                withBlock:^(NSUInteger second) 
     {
         __strong __typeof(weakSelf) strongSelf = weakSelf;
         NSString *buttonTitle;
-        if ( [second isEqualToString:@"0"] ) {
+        if ( second == 0 ) {
             buttonTitle = @"開始";
         }
         else{
-            buttonTitle = [NSString stringWithFormat:@"倒數 %@ 秒！" ,second];
+            buttonTitle = [NSString stringWithFormat:@"倒數 %2lu 秒！" ,second];
         }
         [strongSelf->_testButton setTitle:buttonTitle forState:UIControlStateNormal];
     }];
