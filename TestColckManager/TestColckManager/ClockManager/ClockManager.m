@@ -280,9 +280,18 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     }
 }
 
+#pragma mark - 確認鬧鐘是否存在
+-(BOOL)hasClock:(NSUInteger)tempClockIdentify{
+    BOOL hasClock = NO;
+    if ( [_clockDic objectForKey:[self getClockKey:tempClockIdentify]] != nil ) {
+        hasClock = YES;
+    }
+    return hasClock;
+}
+
 #pragma mark - 內部方法
 -(NSString *)getClockKey:(NSUInteger)tempTag{
-    return [NSString stringWithFormat:@"%@%lu" , K_CLOCK_KEY , tempTag];
+    return [NSString stringWithFormat:@"%@%lu" , K_CLOCK_KEY , (unsigned long)tempTag];
 }
 
 @end

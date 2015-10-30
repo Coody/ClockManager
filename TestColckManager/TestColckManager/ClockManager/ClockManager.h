@@ -35,4 +35,7 @@ extern NSUInteger const K_REGISTER_PHONE_CLOCK;
 /* 在 ApplicationDidFinishLaunch 做 */
 -(void)saveTime;
 
+#pragma mark - 確認鬧鐘是否存在
+-(BOOL)hasClock:(NSUInteger)tempClockIdentify;
+
 @end
