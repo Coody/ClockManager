@@ -28,7 +28,7 @@ extern NSUInteger const K_REGISTER_PHONE_CLOCK;
 -(void)getClockWithSecond:(NSUInteger)tempSecond withTag:(NSUInteger)tempTag withBlock:(void(^)(NSUInteger second))responseBlock;
 
 /**
- * TODO:
+ * TODO: 不用管內部倒數，只處理開始、結束的 Clock
  */
 -(void)getClockWithSecond:(NSUInteger)tempSecond 
                   withTag:(NSUInteger)tempTag 
