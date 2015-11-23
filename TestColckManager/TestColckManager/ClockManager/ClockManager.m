@@ -186,7 +186,9 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     else{
         self.recentSecond = _recentSecond - 1;
     }
+#ifdef DEBUG
     NSLog(@" 倒數計時：%lu" , _recentSecond);
+#endif
     _block( _recentSecond );
 }
 
@@ -234,7 +236,9 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 #pragma mark - 開放方法
 -(void)getClockWithSecond:(NSUInteger)tempSecond withTag:(NSUInteger)tempTag withBlock:(void(^)(NSUInteger second))responseBlock{
     if ( tempSecond == 0 ) {
+#ifdef DEBUG
         NSLog(@" 鬧鐘設定倒數時間不為零！！請確認！");
+#endif
         return;
     }
     else{

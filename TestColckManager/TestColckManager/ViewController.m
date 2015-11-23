@@ -28,16 +28,21 @@
                                               withTag:K_REGISTER_PHONE_CLOCK 
                                             withBlock:^(NSUInteger second) 
     {
+        // 使用 weakSelf 避免記憶體遺漏
         __strong __typeof(weakSelf) strongSelf = weakSelf;
         
-        NSString *buttonTitle;
-        if ( second == 0 ) {
-            buttonTitle = @"開始";
+        // 如果  ViewController 解構就不處理
+        if ( strongSelf != nil ) {
+            NSString *buttonTitle;
+            if ( second == 0 ) {
+                buttonTitle = @"開始";
+            }
+            else{
+                buttonTitle = [NSString stringWithFormat:@"倒數 %2lu 秒！" ,second];
+            }
+            [strongSelf->_testButton setTitle:buttonTitle forState:UIControlStateNormal];
         }
-        else{
-            buttonTitle = [NSString stringWithFormat:@"倒數 %2lu 秒！" ,second];
-        }
-        [strongSelf->_testButton setTitle:buttonTitle forState:UIControlStateNormal];
+        
     }];
 }
 
@@ -59,15 +64,20 @@
                                                   WithTag:K_REGISTER_PHONE_CLOCK 
                                                 withBlock:^(NSUInteger second) 
     {
+        // 使用 weakSelf 避免記憶體遺漏
         __strong __typeof(weakSelf) strongSelf = weakSelf;
-        NSString *buttonTitle;
-        if ( second == 0 ) {
-            buttonTitle = @"開始";
+        
+        // 如果  ViewController 解構就不處理
+        if ( strongSelf != nil ) {
+            NSString *buttonTitle;
+            if ( second == 0 ) {
+                buttonTitle = @"開始";
+            }
+            else{
+                buttonTitle = [NSString stringWithFormat:@"倒數 %2lu 秒！" ,second];
+            }
+            [strongSelf->_testButton setTitle:buttonTitle forState:UIControlStateNormal];
         }
-        else{
-            buttonTitle = [NSString stringWithFormat:@"倒數 %2lu 秒！" ,second];
-        }
-        [strongSelf->_testButton setTitle:buttonTitle forState:UIControlStateNormal];
     }];
 }
 
