@@ -28,6 +28,14 @@ extern NSUInteger const K_REGISTER_PHONE_CLOCK;
 -(void)getClockWithSecond:(NSUInteger)tempSecond withTag:(NSUInteger)tempTag withBlock:(void(^)(NSUInteger second))responseBlock;
 
 /**
+ * TODO: 不用管內部倒數，只處理開始、結束的 Clock
+ */
+-(void)getClockWithSecond:(NSUInteger)tempSecond 
+                  withTag:(NSUInteger)tempTag 
+           withStartBlock:(void(^)(void))startResponseBlock 
+             withEndBlock:(void(^)(void))endResponseBlock;
+
+/**
  * @warning - 此方法用在 ViewController 在 WillAppear 時使用（是否恢復鬧鐘？）
  */
 -(void)restartColekWithSecond:(NSUInteger)tempSecond WithTag:(NSUInteger)tempTag withBlock:(void(^)(NSUInteger second))responseBlock;
