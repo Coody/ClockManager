@@ -11,6 +11,22 @@
 
 extern NSUInteger const K_REGISTER_PHONE_CLOCK;
 
+
+#pragma mark -
+#pragma mark SGTClock
+/**********************************************/
+#pragma mark -
+#pragma mark Clock
+@interface SGTClock : NSObject
+/**
+ * @brief - 關閉 Clock ，解構使用
+ */
+-(void)clearClock;
+@end
+
+
+#pragma mark -
+#pragma mark ClockManager
 /**
  * @brief - 時鐘管理者
  */
@@ -25,20 +41,31 @@ extern NSUInteger const K_REGISTER_PHONE_CLOCK;
  * @dedtils - 2. 當使用 getTimerString 時，會找出鬧鐘，設定時間給鬧鐘（鬧鐘內自行會判斷要顯示多少），最後把字串吐回來。
  * @details - 3. 當畫面去要到一個 Tag 過的鬧鐘以後，就會一直用同樣的鬧鐘，直到整個程式結束
  */
--(void)getClockWithSecond:(NSUInteger)tempSecond withTag:(NSUInteger)tempTag withBlock:(void(^)(NSUInteger second))responseBlock;
+-(void)getClockWithSecond:(NSUInteger)tempSecond
+                  withTag:(NSUInteger)tempTag
+                withBlock:(void(^)(NSUInteger second))responseBlock;
 
 /**
  * TODO: 不用管內部倒數，只處理開始、結束的 Clock
  */
 -(void)getClockWithSecond:(NSUInteger)tempSecond 
                   withTag:(NSUInteger)tempTag 
-           withStartBlock:(void(^)(void))startResponseBlock 
+           withStartBlock:(void(^)(void))startResponseBlock
+         withProcessBlock:(void(^)(NSUInteger second))processResponseBlock
              withEndBlock:(void(^)(void))endResponseBlock;
+
+/**
+ * @brief - 取得一個 Random 的 SGTClock（不儲存）
+ */
+-(SGTClock *)getRandomClockWithSecond:(NSUInteger)tempSecond
+                            withBlock:(void(^)(NSUInteger second))responseBlock;
 
 /**
  * @warning - 此方法用在 ViewController 在 WillAppear 時使用（是否恢復鬧鐘？）
  */
--(void)restartColekWithSecond:(NSUInteger)tempSecond WithTag:(NSUInteger)tempTag withBlock:(void(^)(NSUInteger second))responseBlock;
+-(void)restartColekWithSecond:(NSUInteger)tempSecond
+                      WithTag:(NSUInteger)tempTag
+                    withBlock:(void(^)(NSUInteger second))responseBlock;
 
 /* 在 ApplicationDidFinishLaunch 做 */
 -(void)saveTime;
