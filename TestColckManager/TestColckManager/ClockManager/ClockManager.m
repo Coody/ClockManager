@@ -262,7 +262,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 /** 覆寫 property 的 setter  */
 -(void)setRecentSecond:(NSInteger)recentSecond
 {
-    if ( recentSecond > _defaultSecond ) {
+    if ( recentSecond > (NSInteger)_defaultSecond ) {
         recentSecond = _defaultSecond;
     }
     
@@ -302,8 +302,10 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     else{
         self.recentSecond = _recentSecond - 1;
     }
-
+    
+#ifdef DEBUG
     NSLog(@" 倒數計時：%lu" , (long)_recentSecond);
+#endif
 
     _block( _recentSecond );
 }
@@ -315,7 +317,9 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     }
     else{
         self.recentSecond = _recentSecond - 1;
+#ifdef DEBUG
         NSLog(@" 倒數計時：%lu" , (long)_recentSecond);
+#endif
         _block( _recentSecond );
     }
 }
@@ -439,7 +443,9 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 {
     SGTClock *clock = nil;
     if ( tempSecond == 0 ) {
+#ifdef DEBUG
         NSLog(@" 鬧鐘設定倒數時間不為零！！請確認！");
+#endif
     }
     else{
         NSString *clockKey = [self getClockKey:K_RANDOM_CLOCK_KEY];
