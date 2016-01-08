@@ -35,7 +35,7 @@
             buttonTitle = @"開始";
         }
         else{
-            buttonTitle = [NSString stringWithFormat:@"倒數 %2lu 秒！" ,second];
+            buttonTitle = [NSString stringWithFormat:@"倒數 %2lu 秒！" ,(unsigned long)second];
         }
         [strongSelf->_testButton setTitle:buttonTitle forState:UIControlStateNormal];
     }];
@@ -65,7 +65,7 @@
             buttonTitle = @"開始";
         }
         else{
-            buttonTitle = [NSString stringWithFormat:@"倒數 %2lu 秒！" ,second];
+            buttonTitle = [NSString stringWithFormat:@"倒數 %2lu 秒！" ,(unsigned long)second];
         }
         [strongSelf->_testButton setTitle:buttonTitle forState:UIControlStateNormal];
     }];

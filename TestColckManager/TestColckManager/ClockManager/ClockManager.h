@@ -1,19 +1,18 @@
 //
 //  ClockManager.h
-//  Prime
+//
 //
 //  Created by Coody on 2015/10/16.
-//  Copyright © 2015年 Coody. All rights reserved.
+//
 //
 
 #import <Foundation/Foundation.h>
 
 
+// 測試用鬧鐘 Tag
 extern NSUInteger const K_REGISTER_PHONE_CLOCK;
 
 
-#pragma mark -
-#pragma mark SGTClock
 /**********************************************/
 #pragma mark -
 #pragma mark Clock
@@ -40,6 +39,11 @@ extern NSUInteger const K_REGISTER_PHONE_CLOCK;
  * @details - 1. 此管理者會記住你設定過的鬧鐘，存在陣列內
  * @dedtils - 2. 當使用 getTimerString 時，會找出鬧鐘，設定時間給鬧鐘（鬧鐘內自行會判斷要顯示多少），最後把字串吐回來。
  * @details - 3. 當畫面去要到一個 Tag 過的鬧鐘以後，就會一直用同樣的鬧鐘，直到整個程式結束
+ *
+ * @param   - tempSecond    : 預設鬧鐘倒數秒數（為固定值）
+ * @param   - tempTag       : 設定鬧鐘獨一無二的 Tag
+ * @param   - responseBlock : 每秒倒數玩的回呼 block
+ * @warning - tag 請在此 ClockManager 內定義好！請勿自行定義，避免鬧鐘 Tag 重複到。
  */
 -(void)getClockWithSecond:(NSUInteger)tempSecond
                   withTag:(NSUInteger)tempTag
@@ -55,10 +59,11 @@ extern NSUInteger const K_REGISTER_PHONE_CLOCK;
              withEndBlock:(void(^)(void))endResponseBlock;
 
 /**
- * @brief - 取得一個 Random 的 SGTClock（不儲存）
+ * @brief - 取得一個倒數計時的鬧鐘， ClockManager 不做管理。
+ * @param - 
  */
--(SGTClock *)getRandomClockWithSecond:(NSUInteger)tempSecond
-                            withBlock:(void(^)(NSUInteger second))responseBlock;
+-(SGTClock *)getRandomClockWithSecond:(NSUInteger)tempSecond 
+                    withResponseBlock:(void(^)(NSString *second))responseBlock;
 
 /**
  * @warning - 此方法用在 ViewController 在 WillAppear 時使用（是否恢復鬧鐘？）
