@@ -263,7 +263,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 -(void)setRecentSecond:(NSInteger)recentSecond
 {
     if ( recentSecond > (NSInteger)_defaultSecond ) {
-        recentSecond = _defaultSecond;
+        recentSecond = (NSInteger)_defaultSecond;
     }
     
     if ( recentSecond <= 0 ) 
