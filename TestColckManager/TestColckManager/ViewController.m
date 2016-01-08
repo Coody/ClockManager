@@ -38,11 +38,10 @@
                 buttonTitle = @"開始";
             }
             else{
-                buttonTitle = [NSString stringWithFormat:@"倒數 %2lu 秒！" ,second];
+                buttonTitle = [NSString stringWithFormat:@"倒數 %2lu 秒！" ,(unsigned long)second];
             }
             [strongSelf->_testButton setTitle:buttonTitle forState:UIControlStateNormal];
         }
-        
     }];
 }
 
@@ -66,7 +65,6 @@
     {
         // 使用 weakSelf 避免記憶體遺漏
         __strong __typeof(weakSelf) strongSelf = weakSelf;
-        
         // 如果  ViewController 解構就不處理
         if ( strongSelf != nil ) {
             NSString *buttonTitle;
@@ -74,7 +72,7 @@
                 buttonTitle = @"開始";
             }
             else{
-                buttonTitle = [NSString stringWithFormat:@"倒數 %2lu 秒！" ,second];
+                buttonTitle = [NSString stringWithFormat:@"倒數 %2lu 秒！" , (unsigned long)second];
             }
             [strongSelf->_testButton setTitle:buttonTitle forState:UIControlStateNormal];
         }
