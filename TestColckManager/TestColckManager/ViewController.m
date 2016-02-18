@@ -14,6 +14,10 @@
 // for Tools
 #import "NSUserDefaults+Global.h"
 
+
+// 測試用鬧鐘 Tag
+NSUInteger const K_REGISTER_PHONE_CLOCK = 11111;
+
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *testButton;
 
@@ -49,6 +53,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    _testButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -57,6 +63,8 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    
+    
     
     __weak __typeof(self) weakSelf = self;
     [[ClockManager sharedInstance] restartColekWithSecond:60 

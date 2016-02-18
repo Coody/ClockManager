@@ -9,10 +9,6 @@
 #import <Foundation/Foundation.h>
 
 
-// 測試用鬧鐘 Tag
-extern NSUInteger const K_REGISTER_PHONE_CLOCK;
-
-
 /**********************************************/
 #pragma mark -
 #pragma mark Clock

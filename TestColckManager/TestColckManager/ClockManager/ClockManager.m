@@ -12,8 +12,6 @@
 #import "NSDate+Interval.h"
 #import "NSUserDefaults+Global.h"
 
-// 測試用鬧鐘 Tag
-NSUInteger const K_REGISTER_PHONE_CLOCK = 11111;
 
 //////////////////////////////////////////////
 static NSUInteger const K_RANDOM_CLOCK_KEY = 999999;/* 隨機產生的 clock 的 key （暫時不更動） */
