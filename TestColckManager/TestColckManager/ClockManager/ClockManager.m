@@ -139,6 +139,15 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
         _endBlock = [endBlock copy];
         _defaultSecond = tempSecond;
         _recentSecond = _defaultSecond;
+        _recentTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 
+                                                        target:self 
+                                                      selector:@selector(countDownWithAllSequence) 
+                                                      userInfo:nil 
+                                                       repeats:YES];
+        [self setRealSecond];
+        if ( _recentSecond == _defaultSecond ) {
+            _startBlock();
+        }
     }
     return self;
 }
@@ -197,8 +206,8 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     }
     else{
         if ( _recentSecond == 0 ) {
-            _startBlock();
             _recentSecond = _defaultSecond;
+            _startBlock();
         }
         [_recentTimer setFireDate:[NSDate date]];
     }
@@ -264,7 +273,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
         recentSecond = (NSInteger)_defaultSecond;
     }
     
-    if ( recentSecond <= 0 ) 
+    if ( recentSecond < 0 ) 
     {
         _recentSecond = 0;
         [_recentTimer setFireDate:[NSDate distantFuture]];
@@ -275,15 +284,15 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
         _recentSecond = _defaultSecond - 1;
         [_recentTimer setFireDate:[NSDate getToday]];
         
-        // TODO: 應該搬到 ApplicationDidFinishLaunch 去做（避免效能差）
-        [self saveClock];
+//        // TODO: 應該搬到 ApplicationDidFinishLaunch 去做（避免效能差）
+//        [self saveClock];
     }
     else
     {
         _recentSecond = recentSecond;
         
-        // TODO: 應該搬到 ApplicationDidFinishLaunch 去做（避免效能差）
-        [self saveClock];
+//        // TODO: 應該搬到 ApplicationDidFinishLaunch 去做（避免效能差）
+//        [self saveClock];
     }
 }
 
@@ -295,7 +304,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     }
     
     if ( _recentSecond <= 0 ) {
-        self.recentSecond = 0;
+        self.recentSecond = -1;
     }
     else{
         self.recentSecond = _recentSecond - 1;
@@ -309,17 +318,24 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 }
 
 -(void)countDownWithAllSequence{
+    // 鬧鐘可以修正預設時間的功能
+    // 修正 _recentSecond
+    if ( _defaultSecond < _recentSecond ) {
+        _recentSecond = _defaultSecond;
+    }
+    
     if ( _recentSecond <= 0 ) {
-        self.recentSecond = 0;
+        self.recentSecond = -1;
         _endBlock();
     }
     else{
         self.recentSecond = _recentSecond - 1;
-#ifdef DEBUG
-        NSLog(@" 倒數計時：%lu" , (long)_recentSecond);
-#endif
         _block( _recentSecond );
     }
+    
+#ifdef DEBUG
+    NSLog(@" 倒數計時：%lu" , (long)_recentSecond);
+#endif
 }
 
 +(NSString *)getClockKey:(NSUInteger)tempTag{
