@@ -311,7 +311,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     }
     
 #ifdef DEBUG
-    NSLog(@" 倒數計時：%lu" , (long)_recentSecond);
+    NSLog(@" 倒數計時( %@ )：%lu" , _clockKey , (long)_recentSecond);
 #endif
 
     _block( _recentSecond );
@@ -334,7 +334,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     }
     
 #ifdef DEBUG
-    NSLog(@" 倒數計時：%lu" , (long)_recentSecond);
+    NSLog(@" 倒數計時( %@ )：%lu" , _clockKey , (long)_recentSecond);
 #endif
 }
 
@@ -462,19 +462,23 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 #endif
     }
     else{
-        NSString *clockKey = [self getClockKey:K_RANDOM_CLOCK_KEY];
-        clock = [_clockDic objectForKey:clockKey];
-        if ( clock == nil ) {
-            clock = [[SGTClock alloc] initWithDefaultSecond:tempSecond 
-                                          withResponseBlock:responseBlock];
-        }
-        else{
+        
+        clock = [[SGTClock alloc] initWithDefaultSecond:tempSecond 
+                                      withResponseBlock:responseBlock];
+        
+//        NSString *clockKey = [self getClockKey:K_RANDOM_CLOCK_KEY];
+//        clock = [_clockDic objectForKey:clockKey];
+//        if ( clock == nil ) {
+//            clock = [[SGTClock alloc] initWithDefaultSecond:tempSecond 
+//                                          withResponseBlock:responseBlock];
+//        }
+//        else{
 //            [_clockDic removeObjectForKey:[self getClockKey:K_RANDOM_CLOCK_KEY]];
 //            [clock clearClock];
 //            clock = nil;
 //            clock = [[SGTClock alloc] initWithDefaultSecond:tempSecond 
 //                                          withResponseBlock:responseBlock];
-        }
+//        }
         
     }
     return clock;
