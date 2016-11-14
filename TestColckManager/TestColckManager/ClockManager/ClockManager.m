@@ -153,7 +153,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 }
 
 -(instancetype)initWithDefaultSecond:(NSUInteger)tempSecond 
-                   withResponseBlock:(void(^)(NSString *second))responseBlock;
+                   withResponseBlock:(void(^)(NSUInteger second))responseBlock;
 {
     self = [super init];
     if ( self ) {
@@ -453,7 +453,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
  * @brief - 取得一個倒數計時的鬧鐘， ClockManager 不做管理。
  */
 -(SGTClock *)getRandomClockWithSecond:(NSUInteger)tempSecond 
-                    withResponseBlock:(void(^)(NSString *second))responseBlock
+                    withResponseBlock:(void(^)(NSUInteger second))responseBlock
 {
     SGTClock *clock = nil;
     if ( tempSecond == 0 ) {

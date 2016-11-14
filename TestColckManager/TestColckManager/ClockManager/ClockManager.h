@@ -59,7 +59,7 @@
  * @param - 
  */
 -(SGTClock *)getRandomClockWithSecond:(NSUInteger)tempSecond 
-                    withResponseBlock:(void(^)(NSString *second))responseBlock;
+                    withResponseBlock:(void(^)(NSUInteger second))responseBlock;
 
 /**
  * @warning - 此方法用在 ViewController 在 WillAppear 時使用（是否恢復鬧鐘？）
