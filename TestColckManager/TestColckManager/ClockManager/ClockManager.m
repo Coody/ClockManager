@@ -46,6 +46,11 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 @property (nonatomic , strong) NSTimer *recentTimer;
 
 /**
+ * @brief - 是否正在倒數
+ */
+@property (nonatomic , assign) BOOL isTickTick;
+
+/**
  * @brief - 回呼函式（回傳 NSString ）
  */
 @property (nonatomic , copy) void(^block)(NSUInteger second);
@@ -111,6 +116,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     self = [super init];
     if ( self ) 
     {
+        _isTickTick = NO;
         _clockKey = [SGTClock getClockKey:tempTag];
         _block = [responseBlock copy];
         _defaultSecond = tempSecond;
@@ -133,6 +139,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 {
     self = [super init];
     if ( self ) {
+        _isTickTick = NO;
         _clockKey = [SGTClock getClockKey:tempTag];
         _startBlock = [startBlock copy];
         _block = [processBlock copy];
@@ -157,6 +164,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 {
     self = [super init];
     if ( self ) {
+        _isTickTick = NO;
         _clockKey = [SGTClock getClockKey:K_RANDOM_CLOCK_KEY];
         _defaultSecond = tempSecond;
         _recentSecond = _defaultSecond;
@@ -175,6 +183,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 {
     self = [super init];
     if ( self ) {
+        _isTickTick = NO;
         _block = [responseBlock copy];
         _defaultSecond = tempSecond;
         _recentSecond = _defaultSecond;
@@ -187,9 +196,13 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     return self;
 }
 
+/**
+ * 啟動計時
+ */
 -(void)startClockWithStartBlock:(void(^)(void))startBlock
                withProcessBlock:(void(^)(NSUInteger second))processBlock
                    withEndBlock:(void(^)(void))endBlock{
+    _isTickTick = NO;
     _startBlock = nil;
     _startBlock = startBlock;
     _block = nil;
@@ -275,12 +288,14 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     
     if ( recentSecond < 0 ) 
     {
+        _isTickTick = NO;
         _recentSecond = 0;
         [_recentTimer setFireDate:[NSDate distantFuture]];
         [self removeSavedClock];
     }
     else if( recentSecond >= _defaultSecond )
     {
+        _isTickTick = YES;
         _recentSecond = _defaultSecond - 1;
         [_recentTimer setFireDate:[NSDate getToday]];
         
@@ -289,6 +304,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     }
     else
     {
+        _isTickTick = YES;
         _recentSecond = recentSecond;
         
 //        // TODO: 應該搬到 ApplicationDidFinishLaunch 去做（避免效能差）
@@ -336,6 +352,10 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 #ifdef DEBUG
     NSLog(@" 倒數計時( %@ )：%lu" , _clockKey , (long)_recentSecond);
 #endif
+}
+
+-(BOOL)getIsTickTick{
+    return _isTickTick;
 }
 
 +(NSString *)getClockKey:(NSUInteger)tempTag{
@@ -462,24 +482,8 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 #endif
     }
     else{
-        
         clock = [[SGTClock alloc] initWithDefaultSecond:tempSecond 
                                       withResponseBlock:responseBlock];
-        
-//        NSString *clockKey = [self getClockKey:K_RANDOM_CLOCK_KEY];
-//        clock = [_clockDic objectForKey:clockKey];
-//        if ( clock == nil ) {
-//            clock = [[SGTClock alloc] initWithDefaultSecond:tempSecond 
-//                                          withResponseBlock:responseBlock];
-//        }
-//        else{
-//            [_clockDic removeObjectForKey:[self getClockKey:K_RANDOM_CLOCK_KEY]];
-//            [clock clearClock];
-//            clock = nil;
-//            clock = [[SGTClock alloc] initWithDefaultSecond:tempSecond 
-//                                          withResponseBlock:responseBlock];
-//        }
-        
     }
     return clock;
 }
@@ -519,6 +523,15 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
         hasClock = YES;
     }
     return hasClock;
+}
+
+-(BOOL)isTickTick:(NSUInteger)tempClockIdentify{
+    BOOL isTickTick = NO;
+    SGTClock *clock = [_clockDic objectForKey:[self getClockKey:tempClockIdentify]];
+    if( clock != NULL ){
+        isTickTick = [clock getIsTickTick];
+    }
+    return isTickTick;
 }
 
 #pragma mark - 內部方法

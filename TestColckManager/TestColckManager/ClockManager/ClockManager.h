@@ -71,7 +71,15 @@
 /* 在 ApplicationDidFinishLaunch 做 */
 -(void)saveTime;
 
-#pragma mark - 確認鬧鐘是否存在
+#pragma mark - 詢問鬧鐘相關資訊
+/**
+ * @brief - 詢問鬧鐘是否存在
+ */
 -(BOOL)hasClock:(NSUInteger)tempClockIdentify;
+
+/**
+ * @brief - 詢問鬧鐘是否正在倒數（必須是受管理的鬧鐘）
+ */
+-(BOOL)isTickTick:(NSUInteger)tempClockIdentify;
 
 @end
