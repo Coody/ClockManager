@@ -233,7 +233,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     if ( _recentSecond == 0 || _recentSecond > _defaultSecond ) {
         _recentSecond = _defaultSecond;
     }
-    [_recentTimer setFireDate:[NSDate date]];
+    _block(_recentSecond);
 }
 
 
