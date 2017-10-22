@@ -2,9 +2,6 @@
 //  NSDate+Interval.h
 //  Foundation
 //
-//  Created by esp on 2014/6/26.
-//  Copyright (c) 2014年 SGT. All rights reserved.
-//
 
 #import <Foundation/Foundation.h>
 
