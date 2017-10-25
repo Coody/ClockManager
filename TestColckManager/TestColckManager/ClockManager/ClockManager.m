@@ -23,7 +23,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 /**********************************************/
 #pragma mark -
 #pragma mark Clock
-@interface SGTClock()
+@interface NormiClock()
 
 /** 
  * @brief - 取得此時鐘，除存在 UserDefault 的 NSDate 的時間 Key
@@ -104,7 +104,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 
 @end
 
-@implementation SGTClock
+@implementation NormiClock
 -(instancetype)init{return nil;};
 -(void)dealloc{ [self clearClock]; }
 
@@ -117,7 +117,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     if ( self ) 
     {
         _isTickTick = NO;
-        _clockKey = [SGTClock getClockKey:tempTag];
+        _clockKey = [NormiClock getClockKey:tempTag];
         _block = [responseBlock copy];
         _defaultSecond = tempSecond;
         _recentSecond = _defaultSecond;
@@ -140,7 +140,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     self = [super init];
     if ( self ) {
         _isTickTick = NO;
-        _clockKey = [SGTClock getClockKey:tempTag];
+        _clockKey = [NormiClock getClockKey:tempTag];
         _startBlock = [startBlock copy];
         _block = [processBlock copy];
         _endBlock = [endBlock copy];
@@ -165,7 +165,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     self = [super init];
     if ( self ) {
         _isTickTick = NO;
-        _clockKey = [SGTClock getClockKey:K_RANDOM_CLOCK_KEY];
+        _clockKey = [NormiClock getClockKey:K_RANDOM_CLOCK_KEY];
         _defaultSecond = tempSecond;
         _recentSecond = _defaultSecond;
         _block = [responseBlock copy];
@@ -244,11 +244,11 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
  */
 -(void)setRealSecond
 {
-    if ( [NSUserDefaults global_HasKey:_clockKey] ) {
+    if ( [NSUserDefaults hasKey:_clockKey] ) {
         // 取得最後一次存入的時間
-        NSTimeInterval second = [[NSUserDefaults global_ObjectForKey:_clockKey] timeIntervalSinceNow];
+        NSTimeInterval second = [[NSUserDefaults loadObjectForKey:_clockKey] timeIntervalSinceNow];
         // 取得最後一次倒數的時間（ 0 ~ defaultSecond 之間）
-        NSUInteger latestSecond = [[NSUserDefaults global_ObjectForKey:[SGTClock getRecentSecondKey:_clockKey]] unsignedIntegerValue];
+        NSUInteger latestSecond = [[NSUserDefaults loadObjectForKey:[NormiClock getRecentSecondKey:_clockKey]] unsignedIntegerValue];
         self.recentSecond = (latestSecond + (int)second); 
     }
 }
@@ -264,14 +264,14 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 }
 
 -(void)saveClock{
-    [NSUserDefaults global_SyncOjbect:[NSDate getToday] forKey:_clockKey];
-    [NSUserDefaults global_SyncOjbect:[NSNumber numberWithUnsignedInteger:_recentSecond] 
-                               forKey:[SGTClock getRecentSecondKey:_clockKey]];
+    [NSUserDefaults saveOjbect:[NSDate getToday] forKey:_clockKey];
+    [NSUserDefaults saveOjbect:[NSNumber numberWithUnsignedInteger:_recentSecond]
+                        forKey:[NormiClock getRecentSecondKey:_clockKey]];
 }
 
 -(void)removeSavedClock{
-    [NSUserDefaults global_RemoveKey:_clockKey];
-    [NSUserDefaults global_RemoveKey:[SGTClock getRecentSecondKey:_clockKey]];
+    [NSUserDefaults removeKey:_clockKey];
+    [NSUserDefaults removeKey:[NormiClock getRecentSecondKey:_clockKey]];
 }
 
 -(void)resetClockDefaultSecond:(NSUInteger)tempNewDefaultSecond{
@@ -405,11 +405,11 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
                 withBlock:(void(^)(NSUInteger second))responseBlock
 {
     NSString *clockKey = [self getClockKey:tempTag];
-    SGTClock *clock = [_clockDic objectForKey:clockKey];
+    NormiClock *clock = [_clockDic objectForKey:clockKey];
     if ( clock == nil ) {
-        clock = [[SGTClock alloc] initWithDefaultSecond:tempSecond
-                                                withTag:tempTag
-                                              withBlock:responseBlock];
+        clock = [[NormiClock alloc] initWithDefaultSecond:tempSecond
+                                                  withTag:tempTag
+                                                withBlock:responseBlock];
         
         // 將時鐘交給 TimerManager 來儲存管理
         [_clockDic setObject:clock forKey:clockKey];
@@ -427,13 +427,13 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
              withEndBlock:(void(^)(void))endResponseBlock
 {
     NSString *clockKey = [self getClockKey:tempTag];
-    SGTClock *clock = [_clockDic objectForKey:clockKey];
+    NormiClock *clock = [_clockDic objectForKey:clockKey];
     if ( clock == nil ) {
-        clock = [[SGTClock alloc] initWithDefaultSecond:tempSecond 
-                                                withTag:tempTag
-                                         withStartBlock:startResponseBlock
-                                       withProcessBlock:processResponseBlock
-                                           withEndBlock:endResponseBlock];
+        clock = [[NormiClock alloc] initWithDefaultSecond:tempSecond
+                                                  withTag:tempTag
+                                           withStartBlock:startResponseBlock
+                                         withProcessBlock:processResponseBlock
+                                             withEndBlock:endResponseBlock];
         
         // 將時鐘交給 TimerManager 來儲存管理
         [_clockDic setObject:clock forKey:clockKey];
@@ -451,13 +451,13 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
              withEndBlock:(void(^)(void))endResponseBlock
 {
     NSString *clockKey = [self getClockKey:tempTag];
-    SGTClock *clock = [_clockDic objectForKey:clockKey];
+    NormiClock *clock = [_clockDic objectForKey:clockKey];
     if ( clock == nil ) {
-        clock = [[SGTClock alloc] initWithDefaultSecond:tempSecond
-                                                withTag:tempTag
-                                         withStartBlock:startResponseBlock
-                                       withProcessBlock:nil
-                                           withEndBlock:endResponseBlock];
+        clock = [[NormiClock alloc] initWithDefaultSecond:tempSecond
+                                                  withTag:tempTag
+                                           withStartBlock:startResponseBlock
+                                         withProcessBlock:nil
+                                             withEndBlock:endResponseBlock];
         
         // 將時鐘交給 TimerManager 來儲存管理
         [_clockDic setObject:clock forKey:clockKey];
@@ -472,18 +472,18 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 /**
  * @brief - 取得一個倒數計時的鬧鐘， ClockManager 不做管理。
  */
--(SGTClock *)getRandomClockWithSecond:(NSUInteger)tempSecond 
-                    withResponseBlock:(void(^)(NSUInteger second))responseBlock
+-(NormiClock *)getRandomClockWithSecond:(NSUInteger)tempSecond
+                      withResponseBlock:(void(^)(NSUInteger second))responseBlock
 {
-    SGTClock *clock = nil;
+    NormiClock *clock = nil;
     if ( tempSecond == 0 ) {
 #ifdef DEBUG
         NSLog(@" 鬧鐘設定倒數時間不為零！！請確認！");
 #endif
     }
     else{
-        clock = [[SGTClock alloc] initWithDefaultSecond:tempSecond 
-                                      withResponseBlock:responseBlock];
+        clock = [[NormiClock alloc] initWithDefaultSecond:tempSecond
+                                        withResponseBlock:responseBlock];
     }
     return clock;
 }
@@ -500,7 +500,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
             b.2 不存在 -> 將此鬧鐘的 Key & Object 存入 _clockDic 字典中，然後建立鬧鐘。
      */ 
     
-    if ( [NSUserDefaults global_HasKey:[SGTClock getClockKey:tempTag]] ) {
+    if ( [NSUserDefaults hasKey:[NormiClock getClockKey:tempTag]] ) {
         // b. 有 -> 去 _timerDic 中確認鬧鐘是否已經存在？
         [[ClockManager sharedInstance] getClockWithSecond:tempSecond withTag:tempTag withBlock:responseBlock];
     }
@@ -511,7 +511,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 
 /* 在 ApplicationDidFinishLaunch 做 */
 -(void)saveTime{
-    for ( SGTClock *unitClock in _clockDic ) {
+    for ( NormiClock *unitClock in _clockDic ) {
         [unitClock saveClock];
     }
 }
@@ -527,7 +527,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 
 -(BOOL)isTickTick:(NSUInteger)tempClockIdentify{
     BOOL isTickTick = NO;
-    SGTClock *clock = [_clockDic objectForKey:[self getClockKey:tempClockIdentify]];
+    NormiClock *clock = [_clockDic objectForKey:[self getClockKey:tempClockIdentify]];
     if( clock != NULL ){
         isTickTick = [clock getIsTickTick];
     }

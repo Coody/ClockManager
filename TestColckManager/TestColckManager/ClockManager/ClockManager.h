@@ -12,7 +12,7 @@
 /**********************************************/
 #pragma mark -
 #pragma mark Clock
-@interface SGTClock : NSObject
+@interface NormiClock : NSObject
 /**
  * @brief - 關閉 Clock ，解構使用
  */
@@ -58,8 +58,8 @@
  * @brief - 取得一個倒數計時的鬧鐘， ClockManager 不做管理。
  * @param - 
  */
--(SGTClock *)getRandomClockWithSecond:(NSUInteger)tempSecond 
-                    withResponseBlock:(void(^)(NSUInteger second))responseBlock;
+-(NormiClock *)getRandomClockWithSecond:(NSUInteger)tempSecond
+                      withResponseBlock:(void(^)(NSUInteger second))responseBlock;
 
 /**
  * @warning - 此方法用在 ViewController 在 WillAppear 時使用（是否恢復鬧鐘？）
