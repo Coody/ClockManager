@@ -20,7 +20,7 @@ NSUInteger const K_REGISTER_PHONE_CLOCK = 11111;
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *testButton;
-@property (nonatomic , strong) SGTClock *clock;
+@property (nonatomic , strong) NormiClock *clock;
 @end
 
 @implementation ViewController
