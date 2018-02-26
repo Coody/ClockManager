@@ -9,7 +9,11 @@
 #import "ClockManager.h"
 
 // for Tools
+#ifdef D_Debug
+#import "NSDate+Common.h"
+#else
 #import "NSDate+Interval.h"
+#endif
 #import "NSUserDefaults+Global.h"
 
 
