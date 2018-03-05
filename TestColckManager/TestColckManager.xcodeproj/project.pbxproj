@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F41236D204DD62A002A3CAF /* NSDate+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F41236C204DD62A002A3CAF /* NSDate+Common.m */; };
 		FB41E6881BD3C3430076658C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB41E6871BD3C3430076658C /* main.m */; };
 		FB41E68B1BD3C3430076658C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB41E68A1BD3C3430076658C /* AppDelegate.m */; };
 		FB41E68E1BD3C3430076658C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB41E68D1BD3C3430076658C /* ViewController.m */; };
@@ -15,9 +16,8 @@
 		FB41E6961BD3C3430076658C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB41E6941BD3C3430076658C /* LaunchScreen.storyboard */; };
 		FB41E6A11BD3C3430076658C /* TestColckManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FB41E6A01BD3C3430076658C /* TestColckManagerTests.m */; };
 		FB41E6AC1BD3C3430076658C /* TestColckManagerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = FB41E6AB1BD3C3430076658C /* TestColckManagerUITests.m */; };
-		FB41E6BC1BD3C3800076658C /* ClockManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FB41E6BB1BD3C3800076658C /* ClockManager.m */; settings = {ASSET_TAGS = (); }; };
-		FB41E6C21BD3C5B20076658C /* NSDate+Interval.m in Sources */ = {isa = PBXBuildFile; fileRef = FB41E6BF1BD3C5B20076658C /* NSDate+Interval.m */; settings = {ASSET_TAGS = (); }; };
-		FB41E6C31BD3C5B20076658C /* NSUserDefaults+Global.m in Sources */ = {isa = PBXBuildFile; fileRef = FB41E6C11BD3C5B20076658C /* NSUserDefaults+Global.m */; settings = {ASSET_TAGS = (); }; };
+		FB41E6BC1BD3C3800076658C /* ClockManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FB41E6BB1BD3C3800076658C /* ClockManager.m */; };
+		FB41E6C31BD3C5B20076658C /* NSUserDefaults+Global.m in Sources */ = {isa = PBXBuildFile; fileRef = FB41E6C11BD3C5B20076658C /* NSUserDefaults+Global.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6F41236B204DD62A002A3CAF /* NSDate+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Common.h"; sourceTree = "<group>"; };
+		6F41236C204DD62A002A3CAF /* NSDate+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Common.m"; sourceTree = "<group>"; };
 		FB41E6831BD3C3430076658C /* TestColckManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestColckManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB41E6871BD3C3430076658C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		FB41E6891BD3C3430076658C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -56,8 +58,6 @@
 		FB41E6AD1BD3C3430076658C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FB41E6BA1BD3C3800076658C /* ClockManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClockManager.h; sourceTree = "<group>"; };
 		FB41E6BB1BD3C3800076658C /* ClockManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClockManager.m; sourceTree = "<group>"; };
-		FB41E6BE1BD3C5B20076658C /* NSDate+Interval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Interval.h"; sourceTree = "<group>"; };
-		FB41E6BF1BD3C5B20076658C /* NSDate+Interval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Interval.m"; sourceTree = "<group>"; };
 		FB41E6C01BD3C5B20076658C /* NSUserDefaults+Global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+Global.h"; sourceTree = "<group>"; };
 		FB41E6C11BD3C5B20076658C /* NSUserDefaults+Global.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+Global.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -163,8 +163,8 @@
 		FB41E6BD1BD3C5B20076658C /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				FB41E6BE1BD3C5B20076658C /* NSDate+Interval.h */,
-				FB41E6BF1BD3C5B20076658C /* NSDate+Interval.m */,
+				6F41236B204DD62A002A3CAF /* NSDate+Common.h */,
+				6F41236C204DD62A002A3CAF /* NSDate+Common.m */,
 				FB41E6C01BD3C5B20076658C /* NSUserDefaults+Global.h */,
 				FB41E6C11BD3C5B20076658C /* NSUserDefaults+Global.m */,
 			);
@@ -302,11 +302,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB41E6BC1BD3C3800076658C /* ClockManager.m in Sources */,
-				FB41E6C21BD3C5B20076658C /* NSDate+Interval.m in Sources */,
 				FB41E68E1BD3C3430076658C /* ViewController.m in Sources */,
 				FB41E68B1BD3C3430076658C /* AppDelegate.m in Sources */,
 				FB41E6C31BD3C5B20076658C /* NSUserDefaults+Global.m in Sources */,
 				FB41E6881BD3C3430076658C /* main.m in Sources */,
+				6F41236D204DD62A002A3CAF /* NSDate+Common.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
