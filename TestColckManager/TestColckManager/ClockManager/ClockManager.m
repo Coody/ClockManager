@@ -228,12 +228,15 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 
 -(void)startClockWithBlock:(void(^)(NSUInteger second))responseBlock
 {
+    _isTickTick = NO;
     _block = nil;
     _block = responseBlock;
     if ( _recentSecond == 0 || _recentSecond > _defaultSecond ) {
         _recentSecond = _defaultSecond;
     }
-    _block(_recentSecond);
+    if( !self.isTickTick ){
+        [_recentTimer setFireDate:[NSDate date]];
+    }
 }
 
 
