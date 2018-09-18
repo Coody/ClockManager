@@ -36,10 +36,10 @@
  * @dedtils - 2. 當使用 getTimerString 時，會找出鬧鐘，設定時間給鬧鐘（鬧鐘內自行會判斷要顯示多少），最後把字串吐回來。
  * @details - 3. 當畫面去要到一個 Tag 過的鬧鐘以後，就會一直用同樣的鬧鐘，直到整個程式結束
  *
- * @param   - tempSecond    : 預設鬧鐘倒數秒數（為固定值）
- * @param   - tempTag       : 設定鬧鐘獨一無二的 Tag
- * @param   - responseBlock : 每秒倒數玩的回呼 block
- * @warning - tag 請在此 ClockManager 內定義好！請勿自行定義，避免鬧鐘 Tag 重複到。
+ * @param   tempSecond    : 預設鬧鐘倒數秒數（為固定值）
+ * @param   tempTag       : 設定鬧鐘獨一無二的 Tag
+ * @param   responseBlock : 每秒倒數玩的回呼 block
+ * @warning tag 請在此 ClockManager 內定義好！請勿自行定義，避免鬧鐘 Tag 重複到。
  */
 -(void)getClockWithSecond:(NSUInteger)tempSecond
                   withTag:(NSUInteger)tempTag
@@ -56,7 +56,8 @@
 
 /**
  * @brief - 取得一個倒數計時的鬧鐘， ClockManager 不做管理。
- * @param - 
+ * @param tempSecond 秒數
+ * @param responseBlock 每秒回應 block
  */
 -(NormiClock *)getRandomClockWithSecond:(NSUInteger)tempSecond
                       withResponseBlock:(void(^)(NSUInteger second))responseBlock;

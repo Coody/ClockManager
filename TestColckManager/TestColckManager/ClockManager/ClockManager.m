@@ -54,14 +54,14 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
  * @brief - 回呼函式（回傳 NSString ）
  */
 @property (nonatomic , copy) void(^block)(NSUInteger second);
-@property (nonatomic , copy) void(^startBlock)();
-@property (nonatomic , copy) void(^endBlock)();
+@property (nonatomic , copy) void(^startBlock)(void);
+@property (nonatomic , copy) void(^endBlock)(void);
 
 /**
  * @brief  - 初始化方法
- * @params - tempSecond    : 預設倒數總時間 (NSUInteger)
- * @params - tempTag       : 識別此 Clock 的 Tag (NSUInteger)
- * @params - responseBlock : 回呼函式
+ * @params tempSecond    : 預設倒數總時間 (NSUInteger)
+ * @params tempTag       : 識別此 Clock 的 Tag (NSUInteger)
+ * @params responseBlock : 回呼函式
  */
 -(instancetype)initWithDefaultSecond:(NSUInteger)tempSecond 
                              withTag:(NSUInteger)tempTag 
@@ -69,11 +69,11 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 
 /**
  * @brief  - 初始化方法
- * @params - tempSecond    : 預設倒數總時間 (NSUInteger)
- * @params - tempTag       : 識別此 Clock 的 Tag (NSUInteger)
- * @params - startBlock    : 開始倒數的 Block
- * @params - processBlock  : 倒數過程中的 Block
- * @params - endBlock      : 結束後的 Block
+ * @params tempSecond    : 預設倒數總時間 (NSUInteger)
+ * @params tempTag       : 識別此 Clock 的 Tag (NSUInteger)
+ * @params startBlock    : 開始倒數的 Block
+ * @params processBlock  : 倒數過程中的 Block
+ * @params endBlock      : 結束後的 Block
  */
 -(instancetype)initWithDefaultSecond:(NSUInteger)tempSecond
                              withTag:(NSUInteger)tempTag
@@ -133,9 +133,9 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 
 -(instancetype)initWithDefaultSecond:(NSUInteger)tempSecond
                              withTag:(NSUInteger)tempTag
-                      withStartBlock:(void(^)())startBlock
+                      withStartBlock:(void(^)(void))startBlock
                     withProcessBlock:(void(^)(NSUInteger second))processBlock
-                        withEndBlock:(void(^)())endBlock
+                        withEndBlock:(void(^)(void))endBlock
 {
     self = [super init];
     if ( self ) {
