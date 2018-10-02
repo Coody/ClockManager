@@ -11,9 +11,6 @@
 // for ClockManager
 #import "ClockManager.h"
 
-// for Tools
-#import "NSUserDefaults+Global.h"
-
 
 // 測試用鬧鐘 Tag
 NSUInteger const K_REGISTER_PHONE_CLOCK = 11111;

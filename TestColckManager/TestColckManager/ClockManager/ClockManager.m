@@ -8,10 +8,9 @@
 
 #import "ClockManager.h"
 
-// for Tools
-#import "NSDate+Common.h"
-#import "NSUserDefaults+Global.h"
-
+//////////////////////////////////////////////
+static NSString *const kDateFormat_yyyy_MM_dd_HH_mm_ss = @"yyyy-MM-dd HH:mm:ss";
+//////////////////////////////////////////////
 
 //////////////////////////////////////////////
 static NSUInteger const K_RANDOM_CLOCK_KEY = 999999;/* 隨機產生的 clock 的 key （暫時不更動） */
@@ -19,6 +18,57 @@ static NSUInteger const K_RANDOM_CLOCK_KEY = 999999;/* 隨機產生的 clock 的
 static NSString *const K_CLOCK_KEY = @"K_CLOCK_KEY_";
 static NSString *const K_CLOCK_RECENT_TIME_KEY = @"K_CLOCK_RECENT_TIME_KEY_";
 static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
+//////////////////////////////////////////////
+
+/**********************************************/
+#pragma mark - Tools Category
+#pragma mark : NSUserDefaults + Global
+@interface NSUserDefaults (Global)
+/**
+ * @brief 儲存到 value 到 standardUserDefaults
+ */
++ (void)saveOjbect:(id)value forKey:(NSString*)keyName;
+
+/**
+ * @brief 取出 standardUserDefaults object
+ */
++ (id)loadObjectForKey:(NSString*)keyName;
+
+/**
+ * @brief 判斷是否有此 key
+ */
++ (BOOL)hasKey:(NSString*)keyName;
+
+/**
+ * @brief 清除此 key, 包含物件
+ */
++ (void)removeKey:(NSString*)keyName;
+@end
+
+@implementation NSUserDefaults (Global)
+
+// 儲存到 standardUserDefaults
++ (void)saveOjbect:(id)value forKey:(NSString*)keyName{
+    [[self standardUserDefaults] setObject:value forKey:keyName];
+    [[self standardUserDefaults] synchronize];
+}
+
+// 取出 standardUserDefaults object
++ (id)loadObjectForKey:(NSString*)keyName{
+    return [[self standardUserDefaults] objectForKey:keyName];
+}
+
+// 判斷是否有此 key
++ (BOOL)hasKey:(NSString*)keyName{
+    return ( [[self standardUserDefaults] objectForKey:keyName] != nil );
+}
+
+// 清除此 key, 包含物件
++ (void)removeKey:(NSString*)keyName{
+    [[self standardUserDefaults] removeObjectForKey:keyName];
+    [[self standardUserDefaults] synchronize];
+}
+@end
 
 /**********************************************/
 #pragma mark -
@@ -267,7 +317,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 }
 
 -(void)saveClock{
-    [NSUserDefaults saveOjbect:[NSDate getToday] forKey:_clockKey];
+    [NSUserDefaults saveOjbect:[NSDate date] forKey:_clockKey];
     [NSUserDefaults saveOjbect:[NSNumber numberWithUnsignedInteger:_recentSecond]
                         forKey:[NormiClock getRecentSecondKey:_clockKey]];
 }
@@ -300,7 +350,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     {
         _isTickTick = YES;
         _recentSecond = _defaultSecond - 1;
-        [_recentTimer setFireDate:[NSDate getToday]];
+        [_recentTimer setFireDate:[NSDate date]];
         
 //        // TODO: 應該搬到 ApplicationDidFinishLaunch 去做（避免效能差）
 //        [self saveClock];
@@ -514,7 +564,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 
 /* 在 ApplicationDidFinishLaunch 做 */
 -(void)saveTime{
-    for ( NormiClock *unitClock in _clockDic ) {
+    for ( NormiClock *unitClock in _clockDic.allValues ) {
         [unitClock saveClock];
     }
 }
