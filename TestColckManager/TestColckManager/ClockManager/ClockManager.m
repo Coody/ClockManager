@@ -127,9 +127,9 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
  */
 -(instancetype)initWithDefaultSecond:(NSUInteger)tempSecond
                              withTag:(NSUInteger)tempTag
-                      withStartBlock:(void(^)())startBlock
+                      withStartBlock:(void(^)(void))startBlock
                     withProcessBlock:(void(^)(NSUInteger second))processBlock
-                        withEndBlock:(void(^)())endBlock;
+                        withEndBlock:(void(^)(void))endBlock;
 
 /**
  * @brief  - 產生一個用完即丟的鬧鐘
@@ -198,7 +198,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
         _recentSecond = _defaultSecond;
         _recentTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 
                                                         target:self 
-                                                      selector:@selector(countDownWithAllSequence) 
+                                                      selector:@selector(countDown) 
                                                       userInfo:nil 
                                                        repeats:YES];
         [self setRealSecond];
@@ -252,23 +252,25 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 -(void)startClockWithStartBlock:(void(^)(void))startBlock
                withProcessBlock:(void(^)(NSUInteger second))processBlock
                    withEndBlock:(void(^)(void))endBlock{
-    _isTickTick = NO;
+    // block 重新設定
     _startBlock = nil;
     _startBlock = startBlock;
     _block = nil;
     _block = processBlock;
     _endBlock = nil;
     _endBlock = endBlock;
+    
     if ( _recentTimer == nil ) {
+        _isTickTick = NO;
         _startBlock();
         _recentTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                         target:self
-                                                      selector:@selector(countDownWithAllSequence)
+                                                      selector:@selector(countDown)
                                                       userInfo:nil
                                                        repeats:YES];
     }
     else{
-        if ( _recentSecond == 0 ) {
+        if ( _recentSecond <= 0 ) {
             _recentSecond = _defaultSecond;
             _startBlock();
         }
@@ -278,10 +280,10 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 
 -(void)startClockWithBlock:(void(^)(NSUInteger second))responseBlock
 {
-    _isTickTick = NO;
     _block = nil;
     _block = responseBlock;
     if ( _recentSecond == 0 || _recentSecond > _defaultSecond ) {
+        _isTickTick = NO;
         _recentSecond = _defaultSecond;
     }
     if( !self.isTickTick ){
@@ -374,34 +376,17 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     
     if ( _recentSecond <= 0 ) {
         self.recentSecond = -1;
-    }
-    else{
-        self.recentSecond = _recentSecond - 1;
-    }
-    
-#ifdef DEBUG
-    NSLog(@" 倒數計時( %@ )：%lu" , _clockKey , (long)_recentSecond);
-#endif
-
-    _block( _recentSecond );
-}
-
--(void)countDownWithAllSequence{
-    // 鬧鐘可以修正預設時間的功能
-    // 修正 _recentSecond
-    if ( _defaultSecond < _recentSecond ) {
-        _recentSecond = _defaultSecond;
-    }
-    
-    if ( _recentSecond <= 0 ) {
-        self.recentSecond = -1;
-        _endBlock();
+        if( _endBlock ){
+            _endBlock();
+        }
+        else{
+            _block( _recentSecond );
+        }
     }
     else{
         self.recentSecond = _recentSecond - 1;
         _block( _recentSecond );
     }
-    
 #ifdef DEBUG
     NSLog(@" 倒數計時( %@ )：%lu" , _clockKey , (long)_recentSecond);
 #endif
@@ -540,6 +525,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     }
     return clock;
 }
+
 
 -(void)restartColekWithSecond:(NSUInteger)tempSecond
                       WithTag:(NSUInteger)tempTag
