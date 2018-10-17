@@ -318,19 +318,25 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     _recentSecond = 0;
 }
 
--(void)saveClock{
-    [NSUserDefaults saveOjbect:[NSDate date] forKey:_clockKey];
-    [NSUserDefaults saveOjbect:[NSNumber numberWithUnsignedInteger:_recentSecond]
-                        forKey:[NormiClock getRecentSecondKey:_clockKey]];
+/** 暫時停止（當有開始計時的時候才有用）*/
+-(void)pauseClock{
+    if( [self isTickTick] ){
+        [_recentTimer invalidate];
+        _recentTimer = nil;
+        _isTickTick = NO;
+    }
 }
 
--(void)removeSavedClock{
-    [NSUserDefaults removeKey:_clockKey];
-    [NSUserDefaults removeKey:[NormiClock getRecentSecondKey:_clockKey]];
-}
-
--(void)resetClockDefaultSecond:(NSUInteger)tempNewDefaultSecond{
-    _defaultSecond = tempNewDefaultSecond;
+/** 繼續計時（當時鐘是停止的時候才有用）*/
+-(void)startClock{
+    if( ![self isTickTick] ){
+        _isTickTick = YES;
+        _recentTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                        target:self
+                                                      selector:@selector(countDown)
+                                                      userInfo:nil
+                                                       repeats:YES];
+    }
 }
 
 #pragma mark - 內部方法
@@ -390,6 +396,21 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 #ifdef DEBUG
     NSLog(@" 倒數計時( %@ )：%lu" , _clockKey , (long)_recentSecond);
 #endif
+}
+
+-(void)saveClock{
+    [NSUserDefaults saveOjbect:[NSDate date] forKey:_clockKey];
+    [NSUserDefaults saveOjbect:[NSNumber numberWithUnsignedInteger:_recentSecond]
+                        forKey:[NormiClock getRecentSecondKey:_clockKey]];
+}
+
+-(void)removeSavedClock{
+    [NSUserDefaults removeKey:_clockKey];
+    [NSUserDefaults removeKey:[NormiClock getRecentSecondKey:_clockKey]];
+}
+
+-(void)resetClockDefaultSecond:(NSUInteger)tempNewDefaultSecond{
+    _defaultSecond = tempNewDefaultSecond;
 }
 
 -(BOOL)getIsTickTick{
@@ -522,6 +543,26 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     else{
         clock = [[NormiClock alloc] initWithDefaultSecond:tempSecond
                                         withResponseBlock:responseBlock];
+    }
+    return clock;
+}
+
+-(NormiClock *)getRandomClockWithSecond:(NSUInteger)tempSecond 
+                         withStartBlock:(void(^)(void))startResponseBlock
+                       withProcessBlock:(void(^)(NSUInteger second))processResponseBlock
+                           withEndBlock:(void(^)(void))endResponseBlock{
+    NormiClock *clock = nil;
+    if ( tempSecond == 0 ) {
+#ifdef DEBUG
+        NSLog(@" 鬧鐘設定倒數時間不為零！！請確認！");
+#endif
+    }
+    else{
+        clock = [[NormiClock alloc] initWithDefaultSecond:tempSecond 
+                                                  withTag:[NormiClock getClockKey:K_RANDOM_CLOCK_KEY] 
+                                           withStartBlock:startResponseBlock 
+                                         withProcessBlock:processResponseBlock 
+                                             withEndBlock:endResponseBlock];
     }
     return clock;
 }
