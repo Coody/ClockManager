@@ -291,7 +291,38 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     }
 }
 
-
+/** 覆寫 property 的 setter  */
+-(void)setRecentSecond:(NSInteger)recentSecond
+{
+    if ( recentSecond > (NSInteger)_defaultSecond ) {
+        recentSecond = (NSInteger)_defaultSecond;
+    }
+    
+    if ( recentSecond < 0 )
+    {
+        _isTickTick = NO;
+        _recentSecond = 0;
+        [_recentTimer setFireDate:[NSDate distantFuture]];
+        [self removeSavedClock];
+    }
+    else if( recentSecond >= _defaultSecond )
+    {
+        _isTickTick = YES;
+        _recentSecond = _defaultSecond - 1;
+        [_recentTimer setFireDate:[NSDate date]];
+        
+        //        // TODO: 應該搬到 ApplicationDidFinishLaunch 去做（避免效能差）
+        //        [self saveClock];
+    }
+    else
+    {
+        _isTickTick = YES;
+        _recentSecond = recentSecond;
+        
+        //        // TODO: 應該搬到 ApplicationDidFinishLaunch 去做（避免效能差）
+        //        [self saveClock];
+    }
+}
 
 /**
  * @brief   - 開放給時間管理者傳送真正需要數的時間（會取得真正的時間差）
@@ -340,39 +371,6 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 }
 
 #pragma mark - 內部方法
-/** 覆寫 property 的 setter  */
--(void)setRecentSecond:(NSInteger)recentSecond
-{
-    if ( recentSecond > (NSInteger)_defaultSecond ) {
-        recentSecond = (NSInteger)_defaultSecond;
-    }
-    
-    if ( recentSecond < 0 ) 
-    {
-        _isTickTick = NO;
-        _recentSecond = 0;
-        [_recentTimer setFireDate:[NSDate distantFuture]];
-        [self removeSavedClock];
-    }
-    else if( recentSecond >= _defaultSecond )
-    {
-        _isTickTick = YES;
-        _recentSecond = _defaultSecond - 1;
-        [_recentTimer setFireDate:[NSDate date]];
-        
-//        // TODO: 應該搬到 ApplicationDidFinishLaunch 去做（避免效能差）
-//        [self saveClock];
-    }
-    else
-    {
-        _isTickTick = YES;
-        _recentSecond = recentSecond;
-        
-//        // TODO: 應該搬到 ApplicationDidFinishLaunch 去做（避免效能差）
-//        [self saveClock];
-    }
-}
-
 -(void)countDown{
     // 鬧鐘可以修正預設時間的功能
     // 修正 _recentSecond
@@ -394,7 +392,9 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
         _block( _recentSecond );
     }
 #ifdef DEBUG
-    NSLog(@" 倒數計時( %@ )：%lu" , _clockKey , (long)_recentSecond);
+    if( _recentSecond <= 5 || _recentSecond % 5 == 0 ){
+        NSLog(@" 倒數計時( %@ )：%lu" , _clockKey , (long)_recentSecond);
+    }
 #endif
 }
 
@@ -559,7 +559,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     }
     else{
         clock = [[NormiClock alloc] initWithDefaultSecond:tempSecond 
-                                                  withTag:[NormiClock getClockKey:K_RANDOM_CLOCK_KEY] 
+                                                  withTag:K_RANDOM_CLOCK_KEY
                                            withStartBlock:startResponseBlock 
                                          withProcessBlock:processResponseBlock 
                                              withEndBlock:endResponseBlock];
