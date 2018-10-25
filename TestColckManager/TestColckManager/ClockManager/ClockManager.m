@@ -13,7 +13,7 @@ static NSString *const kDateFormat_yyyy_MM_dd_HH_mm_ss = @"yyyy-MM-dd HH:mm:ss";
 //////////////////////////////////////////////
 
 //////////////////////////////////////////////
-static NSUInteger const K_RANDOM_CLOCK_KEY = 999999;/* 隨機產生的 clock 的 key （暫時不更動） */
+static NSUInteger const K_RANDOM_CLOCK_KEY = 9999;/* 隨機產生的 clock 的 key （暫時不更動） */
 //////////////////////////////////////////////
 static NSString *const K_CLOCK_KEY = @"K_CLOCK_KEY_";
 static NSString *const K_CLOCK_RECENT_TIME_KEY = @"K_CLOCK_RECENT_TIME_KEY_";
@@ -135,6 +135,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
  * @brief  - 產生一個用完即丟的鬧鐘
  */
 -(instancetype)initRandomClockWithDefaultSecond:(NSUInteger)tempSecond
+                                        withTag:(NSUInteger)tempTag
                                       withBlock:(void(^)(NSUInteger second))responseBlock;
 
 /**
@@ -209,34 +210,17 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     return self;
 }
 
--(instancetype)initWithDefaultSecond:(NSUInteger)tempSecond 
-                   withResponseBlock:(void(^)(NSUInteger second))responseBlock;
-{
-    self = [super init];
-    if ( self ) {
-        _isTickTick = NO;
-        _clockKey = [NormiClock getClockKey:K_RANDOM_CLOCK_KEY];
-        _defaultSecond = tempSecond;
-        _recentSecond = _defaultSecond;
-        _block = [responseBlock copy];
-        _recentTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 
-                                                        target:self 
-                                                      selector:@selector(countDown) 
-                                                      userInfo:nil 
-                                                       repeats:YES];
-    }
-    return self;
-}
-
 -(instancetype)initRandomClockWithDefaultSecond:(NSUInteger)tempSecond
+                                        withTag:(NSUInteger)tempTag
                                       withBlock:(void(^)(NSUInteger second))responseBlock
 {
     self = [super init];
     if ( self ) {
         _isTickTick = NO;
-        _block = [responseBlock copy];
+        _clockKey = [NormiClock getClockKey:tempTag];
         _defaultSecond = tempSecond;
         _recentSecond = _defaultSecond;
+        _block = [responseBlock copy];
         _recentTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                         target:self
                                                       selector:@selector(countDown)
@@ -392,7 +376,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
         _block( _recentSecond );
     }
 #ifdef DEBUG
-    if( _recentSecond <= 5 || _recentSecond % 5 == 0 ){
+    if( _recentSecond <= 10 || _recentSecond % 10 == 0 ){
         NSLog(@" 倒數計時( %@ )：%lu" , _clockKey , (long)_recentSecond);
     }
 #endif
@@ -430,9 +414,10 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 
 /**********************************************/
 #pragma mark -
-#pragma mark TimerManager
+#pragma mark ClockManager
 @interface ClockManager()
 @property (nonatomic , strong) NSMutableDictionary *clockDic;
+@property (nonatomic , assign) NSUInteger randomClockCount;
 @end
 
 @implementation ClockManager
@@ -454,6 +439,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     self = [super init];
     if ( self ) {
         _clockDic = [[NSMutableDictionary alloc] init];
+        _randomClockCount = 0;
     }
     return self;
 }
@@ -541,8 +527,9 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 #endif
     }
     else{
-        clock = [[NormiClock alloc] initWithDefaultSecond:tempSecond
-                                        withResponseBlock:responseBlock];
+        _randomClockCount++;
+        clock = [[NormiClock alloc] initRandomClockWithDefaultSecond:tempSecond
+                                                             withTag:(K_RANDOM_CLOCK_KEY*100+_randomClockCount) withBlock:responseBlock];
     }
     return clock;
 }
@@ -558,8 +545,9 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 #endif
     }
     else{
+        _randomClockCount++;
         clock = [[NormiClock alloc] initWithDefaultSecond:tempSecond 
-                                                  withTag:K_RANDOM_CLOCK_KEY
+                                                  withTag:(K_RANDOM_CLOCK_KEY*100+_randomClockCount)
                                            withStartBlock:startResponseBlock 
                                          withProcessBlock:processResponseBlock 
                                              withEndBlock:endResponseBlock];
