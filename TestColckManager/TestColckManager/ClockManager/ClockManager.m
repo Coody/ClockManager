@@ -376,7 +376,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
         _block( _recentSecond );
     }
 #ifdef DEBUG
-    if( _recentSecond <= 10 || _recentSecond % 10 == 0 ){
+    if( _recentSecond <= 10 ){
         NSLog(@" 倒數計時( %@ )：%lu" , _clockKey , (long)_recentSecond);
     }
 #endif
