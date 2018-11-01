@@ -172,11 +172,8 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
         _block = [responseBlock copy];
         _defaultSecond = tempSecond;
         _recentSecond = _defaultSecond;
-        _recentTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 
-                                                        target:self 
-                                                      selector:@selector(countDown) 
-                                                      userInfo:nil 
-                                                       repeats:YES];
+        [self startClock];
+        
         [self setRealSecond];
     }
     return self;
@@ -197,11 +194,8 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
         _endBlock = [endBlock copy];
         _defaultSecond = tempSecond;
         _recentSecond = _defaultSecond;
-        _recentTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 
-                                                        target:self 
-                                                      selector:@selector(countDown) 
-                                                      userInfo:nil 
-                                                       repeats:YES];
+        [self startClock];
+        
         [self setRealSecond];
         if ( _recentSecond == _defaultSecond ) {
             _startBlock();
@@ -221,11 +215,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
         _defaultSecond = tempSecond;
         _recentSecond = _defaultSecond;
         _block = [responseBlock copy];
-        _recentTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                        target:self
-                                                      selector:@selector(countDown)
-                                                      userInfo:nil
-                                                       repeats:YES];
+        [self startClock];
     }
     return self;
 }
@@ -247,11 +237,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     if ( _recentTimer == nil ) {
         _isTickTick = NO;
         _startBlock();
-        _recentTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                        target:self
-                                                      selector:@selector(countDown)
-                                                      userInfo:nil
-                                                       repeats:YES];
+        [self startClock];
     }
     else{
         if ( _recentSecond <= 0 ) {
@@ -336,6 +322,9 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 /** 暫時停止（當有開始計時的時候才有用）*/
 -(void)pauseClock{
     if( [self isTickTick] ){
+#ifdef DEBUG
+        NSLog(@" pause clock key = %@" , self.clockKey);
+#endif
         [_recentTimer invalidate];
         _recentTimer = nil;
         _isTickTick = NO;
@@ -345,6 +334,9 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
 /** 繼續計時（當時鐘是停止的時候才有用）*/
 -(void)startClock{
     if( ![self isTickTick] ){
+#ifdef DEBUG
+        NSLog(@" start clock key = %@" , self.clockKey);
+#endif
         _isTickTick = YES;
         _recentTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                         target:self
@@ -376,7 +368,7 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
         _block( _recentSecond );
     }
 #ifdef DEBUG
-    if( _recentSecond <= 10 ){
+    if( _recentSecond <= 5 || _recentSecond%5 == 0 ){
         NSLog(@" 倒數計時( %@ )：%lu" , _clockKey , (long)_recentSecond);
     }
 #endif
