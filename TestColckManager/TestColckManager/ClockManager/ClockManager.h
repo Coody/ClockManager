@@ -60,7 +60,7 @@
 
 /**
  * @brief - 此方法用在第一次啟動鬧鐘（ Start Block , Process Block , End Block ）。
-            取得一個鬧鐘，給他總共要倒數的時間，以及一個特別的 Tag(NSUInteger)，一個每秒回應後要做事情的 Block，這個鬧鐘就會開始倒數
+ 取得一個鬧鐘，給他總共要倒數的時間，以及一個特別的 Tag(NSUInteger)，一個每秒回應後要做事情的 Block，這個鬧鐘就會開始倒數
  */
 -(void)getClockWithSecond:(NSUInteger)tempSecond 
                   withTag:(NSUInteger)tempTag 
@@ -94,6 +94,11 @@
 -(void)restartColekWithSecond:(NSUInteger)tempSecond
                       WithTag:(NSUInteger)tempTag
                     withBlock:(void(^)(NSUInteger second))responseBlock;
+
+/**
+ * @brief - 移除鬧鐘（建議在畫面離開的時候做）
+ */
+-(void)removeClockWithTag:(NSUInteger)tempTag;
 
 /* 在 ApplicationDidFinishLaunch 做 */
 -(void)saveTime;

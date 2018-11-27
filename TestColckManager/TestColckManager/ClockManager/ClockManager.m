@@ -554,10 +554,10 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     
     /*
      1. 去找 UserDefault 是否有存在的時間？
-        a. 無 -> 不用做任何事情。
-        b. 有 -> 去 _timerDic 中確認鬧鐘是否已經存在？
-            b.1 存在 -> 去 UserDefault 找出之前的時間，現在時間 - 之前時間 = 差距時間 ，與時鐘的預設倒數時間相減後，丟到鬧鐘內自行處理。
-            b.2 不存在 -> 將此鬧鐘的 Key & Object 存入 _clockDic 字典中，然後建立鬧鐘。
+     a. 無 -> 不用做任何事情。
+     b. 有 -> 去 _timerDic 中確認鬧鐘是否已經存在？
+     b.1 存在 -> 去 UserDefault 找出之前的時間，現在時間 - 之前時間 = 差距時間 ，與時鐘的預設倒數時間相減後，丟到鬧鐘內自行處理。
+     b.2 不存在 -> 將此鬧鐘的 Key & Object 存入 _clockDic 字典中，然後建立鬧鐘。
      */ 
     
     if ( [NSUserDefaults hasKey:[NormiClock getClockKey:tempTag]] ) {
@@ -566,6 +566,16 @@ static NSString *const K_RECENT_TIME_KEY = @"K_RECENT_TIME_KEY_";
     }
     else{
         // a. 無 -> 不用做任何事情。
+    }
+}
+
+-(void)removeClockWithTag:(NSUInteger)tempTag{
+    NSString *key = [self getClockKey:tempTag];
+    NormiClock *clock = [self.clockDic objectForKey:key];
+    if( clock ){
+        [clock removeSavedClock];
+        [clock clearClock];
+        [self.clockDic removeObjectForKey:key];
     }
 }
 
