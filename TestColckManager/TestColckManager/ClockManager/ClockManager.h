@@ -95,6 +95,12 @@
                       WithTag:(NSUInteger)tempTag
                     withBlock:(void(^)(NSUInteger second))responseBlock;
 
+-(void)restartClockWithSecond:(NSUInteger)tempSecond 
+                      withTag:(NSUInteger)tempTag 
+               withStartBlock:(void(^)(void))startResponseBlock
+             withProcessBlock:(void(^)(NSUInteger second))processResponseBlock
+                 withEndBlock:(void(^)(void))endResponseBlock;
+
 /**
  * @brief - 移除鬧鐘（建議在畫面離開的時候做）
  */
